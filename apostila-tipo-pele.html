@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tipo de Pele — Automake</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #C8705A; --rose-light: #E8967E; --rose-pale: #F9EDE8;
+    --cream: #FAF7F4; --dark: #1A1210; --mid: #5C4A44;
+    --light: #9B8580; --gold: #C9A96E; --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    background-image: radial-gradient(circle, rgba(200,112,90,0.14) 1px, transparent 1px);
+    background-size: 28px 28px;
+    color: var(--dark); min-height: 100vh; overflow-x: hidden;
+    display: flex; flex-direction: column;
+  }
+  .topbar {
+    background: var(--dark); color: var(--cream); text-align: center;
+    padding: 10px 20px; font-size: 13px; letter-spacing: 0.06em; font-weight: 500;
+    position: relative; flex-shrink: 0;
+  }
+  .topbar span { color: var(--rose-light); }
+  .topbar::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+  }
+  .navbar {
+    background: var(--white); border-bottom: 1px solid rgba(200,112,90,0.1);
+    padding: 14px 32px; display: flex; align-items: center; gap: 16px;
+    animation: fadeDown 0.4s ease both; box-shadow: 0 1px 12px rgba(26,18,16,0.04); flex-shrink: 0;
+  }
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600;
+    color: var(--mid); text-decoration: none; padding: 7px 18px;
+    border: 1.5px solid rgba(92,74,68,0.18); border-radius: 100px;
+    transition: all 0.22s ease; background: var(--cream);
+  }
+  .back-btn:hover { border-color: var(--rose); color: var(--rose); background: var(--rose-pale); }
+  .nav-breadcrumb { font-size: 13px; color: var(--light); }
+  .nav-breadcrumb span { color: var(--mid); font-weight: 500; }
+  .page-banner {
+    background: linear-gradient(180deg, var(--rose-pale) 0%, var(--cream) 100%);
+    padding: 60px 24px 52px; text-align: center; position: relative; overflow: hidden;
+    border-bottom: 1px solid rgba(200,112,90,0.08); animation: fadeUp 0.5s 0.1s both; flex-shrink: 0;
+  }
+  .page-banner::before {
+    content: ''; position: absolute; top: -80px; right: -80px; width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,112,90,0.1) 0%, transparent 70%); pointer-events: none;
+  }
+  .page-banner::after {
+    content: ''; position: absolute; bottom: -50px; left: -80px; width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,169,110,0.07) 0%, transparent 70%); pointer-events: none;
+  }
+  .header-icon {
+    width: 76px; height: 76px; border-radius: 22px; background: var(--white);
+    display: flex; align-items: center; justify-content: center; font-size: 38px;
+    margin: 0 auto 24px; box-shadow: 0 6px 28px rgba(200,112,90,0.18); position: relative; z-index: 1;
+  }
+  .page-number {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 14px; position: relative; z-index: 1;
+  }
+  .page-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.18; color: var(--dark); margin-bottom: 18px; letter-spacing: -0.015em;
+    position: relative; z-index: 1;
+  }
+  .page-title em { font-style: italic; color: var(--rose); }
+  .page-desc {
+    font-size: 16px; color: var(--mid); line-height: 1.8; max-width: 480px;
+    margin: 0 auto 36px; position: relative; z-index: 1;
+  }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 9px; background: var(--rose);
+    color: white; text-decoration: none; border-radius: 100px; padding: 14px 38px;
+    font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+    transition: all 0.25s ease; box-shadow: 0 6px 28px rgba(200,112,90,0.3);
+    letter-spacing: 0.01em; position: relative; z-index: 1;
+  }
+  .btn-download:hover {
+    background: var(--rose-light); transform: translateY(-2px);
+    box-shadow: 0 14px 40px rgba(200,112,90,0.38);
+  }
+  .pdf-section {
+    flex: 1; max-width: 980px; width: 100%; margin: 44px auto 68px;
+    padding: 0 24px; animation: fadeUp 0.5s 0.3s both;
+  }
+  .mobile-notice {
+    display: none; background: var(--rose-pale); border: 1.5px solid rgba(200,112,90,0.22);
+    border-radius: 14px; padding: 18px 22px; margin-bottom: 18px;
+    font-size: 14px; color: var(--mid); line-height: 1.65; text-align: center;
+  }
+  .pdf-wrapper {
+    background: var(--white); border-radius: 22px;
+    box-shadow: 0 6px 48px rgba(26,18,16,0.09), 0 2px 8px rgba(26,18,16,0.04);
+    overflow: hidden; border: 1.5px solid rgba(200,112,90,0.1);
+  }
+  .pdf-wrapper iframe { display: block; width: 100%; height: 820px; border: none; }
+  .footer-divider {
+    height: 1px; flex-shrink: 0; opacity: 0.5;
+    background: linear-gradient(90deg, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+  }
+  footer {
+    background: var(--dark); color: var(--light); text-align: center;
+    padding: 26px 24px; font-size: 13px; line-height: 1.8; letter-spacing: 0.01em; flex-shrink: 0;
+  }
+  footer strong { color: var(--rose-light); }
+  footer a { color: var(--rose-light); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) {
+    .pdf-wrapper iframe { height: 520px; }
+    .mobile-notice { display: block; }
+    .navbar { padding: 12px 16px; }
+    .page-banner { padding: 48px 20px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  Plataforma exclusiva · <span>Curso Automake</span> com Fran Hanel
+</div>
+
+<nav class="navbar">
+  <a href="index.html" class="back-btn">← Voltar</a>
+  <span class="nav-breadcrumb">Apostilas / <span>Tipo de Pele</span></span>
+</nav>
+
+<div class="page-banner">
+  <div class="header-icon">✨</div>
+  <p class="page-number">Apostila 03</p>
+  <h1 class="page-title">Como identificar seu <em>Tipo de Pele</em></h1>
+  <p class="page-desc">Identifique seu tipo de pele e descubra quais produtos e técnicas funcionam melhor para você.</p>
+  <a href="Apostila--Como--identificar--seu--tipo--de--pele.pdf" download class="btn-download">⬇ Baixar PDF</a>
+</div>
+
+<div class="pdf-section">
+  <div class="mobile-notice">
+    📱 No celular, o PDF pode não carregar inline. Use o botão acima para baixar e abrir no seu app favorito.
+  </div>
+  <div class="pdf-wrapper">
+    <iframe src="Apostila--Como--identificar--seu--tipo--de--pele.pdf" title="Apostila Tipo de Pele"></iframe>
+  </div>
+</div>
+
+<div class="footer-divider"></div>
+<footer>
+  <strong>Automake</strong> · Material exclusivo para alunas do curso ·
+  <a href="index.html">← Ver todas as apostilas</a>
+</footer>
+
+</body>
+</html>
